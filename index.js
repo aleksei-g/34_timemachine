@@ -1,4 +1,5 @@
 var TIMEOUT_IN_SECS = 5 * 60
+var TIMEOUT_ALERT_IN_SECS = 30
 var TEMPLATE = '<h1 style="font: 20px/20px Helvetica Neue,Arial,sans-serif;' +
     'color: #6c797f; margin-top: 3px;">' +
     '<span id="timer-minutes">00</span>:<span id="timer-seconds">00</span></h1>'
@@ -33,6 +34,7 @@ function padZero(number){
 }
 
 var timestampOnStart = getTimestampInSecs()
+var timestampAlert = getTimestampInSecs() + TIMEOUT_IN_SECS
 
 function displayTimer(){
   var currentTimestamp = getTimestampInSecs()
@@ -44,9 +46,10 @@ function displayTimer(){
 
   document.getElementById('timer-minutes').innerHTML = padZero(minutes)
   document.getElementById('timer-seconds').innerHTML = padZero(seconds)
-  if(secsLeft == 0 && secsGone % 30 == 0){
+  if(timestampAlert <= currentTimestamp){
       var message = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
       alert(message);
+      timestampAlert = getTimestampInSecs() + TIMEOUT_ALERT_IN_SECS;
     }
 }
 setInterval(displayTimer, 300)
